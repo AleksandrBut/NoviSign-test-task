@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Oleksandr But
+      comment: Create tables Image, Slideshow
+      changes:
+        - createTable:
+            tableName: image
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: slideshow
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: slideshow_image
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: image_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_image_id
+                    references: image(id)
+              - column:
+                  name: slideshow_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_slideshow_id
+                    references: slideshow(id)
+              - column:
+                  name: play_duration
+                  type: interval
+                  constraints:
+                    nullable: false
+              - column:
+                  name: addition_date
+                  type: timestamptz
+                  constraints:
+                    nullable: false
