@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class SlideshowImage {
 
     @Id
-    private long id;
+    private Long id;
     private Image image;
     private Slideshow slideshow;
     private Duration playDuration;
