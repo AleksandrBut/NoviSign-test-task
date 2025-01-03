@@ -1,11 +1,14 @@
 package com.test.task.novisign.controller;
 
-import com.test.task.novisign.model.Image;
+import com.test.task.novisign.model.dto.ImageDto;
 import com.test.task.novisign.service.ImageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,12 +18,13 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping("addImage")
-    public Mono<Image> addImage(@RequestBody Image image) {
-        return imageService.addImage(image);
+    @ResponseStatus(CREATED)
+    public Mono<ImageDto> addImage(@Valid @RequestBody ImageDto imageDto) {
+        return imageService.addImage(imageDto);
     }
 
     @GetMapping("images/search")
-    public Flux<Image> searchImages() {
+    public Flux<ImageDto> searchImages() {
         return imageService.searchImages();
     }
 

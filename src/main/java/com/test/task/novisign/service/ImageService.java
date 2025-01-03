@@ -1,14 +1,14 @@
 package com.test.task.novisign.service;
 
-import com.test.task.novisign.model.Image;
+import com.test.task.novisign.model.dto.ImageDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ImageService {
 
-    Mono<Image> addImage(Image image);
+    Mono<ImageDto> addImage(ImageDto image);
 
-    Flux<Image> searchImages();
+    Flux<ImageDto> searchImages();
 
     Mono<Void> deleteImageById(Long id);
 }
