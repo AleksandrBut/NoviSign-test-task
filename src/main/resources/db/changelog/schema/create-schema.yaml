@@ -22,6 +22,16 @@ databaseChangeLog:
                   type: varchar(256)
                   constraints:
                     nullable: false
+              - column:
+                  name: play_duration
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: addition_date_time
+                  type: timestamptz
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: slideshow
             columns:
@@ -33,8 +43,6 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(256)
-                  constraints:
-                    nullable: false
         - createTable:
             tableName: slideshow_image
             columns:
@@ -57,13 +65,3 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_slideshow_id
                     references: slideshow(id)
-              - column:
-                  name: play_duration
-                  type: interval
-                  constraints:
-                    nullable: false
-              - column:
-                  name: addition_date
-                  type: timestamptz
-                  constraints:
-                    nullable: false

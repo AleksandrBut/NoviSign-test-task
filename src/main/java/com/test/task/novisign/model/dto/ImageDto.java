@@ -2,12 +2,23 @@ package com.test.task.novisign.model.dto;
 
 import com.test.task.novisign.validation.annotation.ImageUrl;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Data;
 
-public record ImageDto(
-        Long id,
-        @NotBlank(message = "Name must not be blank")
-        String name,
-        @ImageUrl(message = "Provided image URL is blank or does not contain an image: ${validatedValue}")
-        String url
-) {
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+public final class ImageDto {
+
+    private Long id;
+    @NotBlank(message = "Name must not be blank")
+    private String name;
+    @ImageUrl(message = "Provided image URL is blank or does not contain an image: ${validatedValue}")
+    private String url;
+    @NotNull(message = "Play duration must not be null")
+    private Duration playDuration;
+    private LocalDateTime additionDateTime;
 }

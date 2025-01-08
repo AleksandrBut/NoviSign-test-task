@@ -1,17 +1,18 @@
 package com.test.task.novisign.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Data
-@NoArgsConstructor
-@Table
-public class Image {
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-    @Id
-    private Long id;
-    private String name;
-    private String url;
+@Table
+public record Image(
+        @Id
+        Long id,
+        String name,
+        String url,
+        Duration playDuration,
+        LocalDateTime additionDateTime
+) {
 }
