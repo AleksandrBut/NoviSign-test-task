@@ -10,10 +10,6 @@ public interface ImageService {
 
     Mono<ImageDto> addImage(ImageDto image);
 
-    Flux<ImageDto> searchImages();
-
-    Flux<ImageDto> findImagesByIds(List<Long> ids);
-
     Mono<Void> deleteImageById(Long id);
 
     Flux<ImageDto> addImagesToSlideshow(List<ImageDto> images, Long id);

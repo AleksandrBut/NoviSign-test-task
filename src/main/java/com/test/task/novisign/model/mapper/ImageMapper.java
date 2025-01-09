@@ -20,7 +20,7 @@ public interface ImageMapper extends BaseMapper<Image, ImageDto> {
     @Override
     ImageDto toDto(Image entity);
 
-    default List<SlideshowImage> mapToSlideshowImages(List<Long> imageIds, Long slideshowId) {
+    default List<SlideshowImage> toSlideshowImages(List<Long> imageIds, Long slideshowId) {
         return imageIds.stream()
                 .map(imageId -> new SlideshowImage(null, imageId, slideshowId))
                 .toList();

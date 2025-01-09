@@ -8,4 +8,5 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface SlideshowImageRepository extends ReactiveCrudRepository<SlideshowImage, Long> {
 
+    Flux<SlideshowImage> findAllByImageId(Long imageId);
 }

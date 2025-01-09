@@ -30,4 +30,18 @@ public class SlideshowServiceImpl implements SlideshowService {
                             return slideshow;
                         });
     }
+
+    @Override
+    public Mono<Void> deleteSlideshow(Long id) {
+        return slideshowRepository.existsById(id)
+                .filter(exists -> exists)
+                .switchIfEmpty(Mono.error(new NotFoundException("Slideshow with id " + id + " is not found")))
+                .then(slideshowRepository.deleteById(id));
+    }
+
+    @Override
+    public Mono<SlideshowDto> findById(Long id) {
+        return slideshowRepository.findById(id)
+                .map(slideshowMapper::toDto);
+    }
 }

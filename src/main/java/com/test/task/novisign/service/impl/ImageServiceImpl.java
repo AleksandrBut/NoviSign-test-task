@@ -29,12 +29,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Flux<ImageDto> searchImages() {
-        return imageRepository.findAll()
-                .map(imageMapper::toDto);
-    }
-
-    @Override
     public Mono<Void> deleteImageById(Long id) {
         return imageRepository.existsById(id)
                 .filter(exists -> exists)
@@ -48,18 +42,12 @@ public class ImageServiceImpl implements ImageService {
                 .map(ImageDto::getId)
                 .toList();
 
-        return slideshowImageRepository.saveAll(imageMapper.mapToSlideshowImages(imageIds, slideshowId))
+        return slideshowImageRepository.saveAll(imageMapper.toSlideshowImages(imageIds, slideshowId))
                 .onErrorResume(DataIntegrityViolationException.class,
                         e -> Mono.error(new DataIntegrityViolationException("One or many specified images don't exist")))
                 .thenMany(updatePlayDurationIfSpecified(imageDtoList))
                 .thenMany(imageRepository.findAllById(imageIds)
                         .map(imageMapper::toDto));
-    }
-
-    @Override
-    public Flux<ImageDto> findImagesByIds(List<Long> ids) {
-        return imageRepository.findAllById(ids)
-                .map(imageMapper::toDto);
     }
 
     private Flux<Void> updatePlayDurationIfSpecified(List<ImageDto> imageDtos) {

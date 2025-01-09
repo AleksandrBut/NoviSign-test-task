@@ -58,6 +58,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_image_id
                     references: image(id)
+                    deleteCascade: true
               - column:
                   name: slideshow_id
                   type: int
@@ -65,3 +66,4 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_slideshow_id
                     references: slideshow(id)
+                    deleteCascade: true

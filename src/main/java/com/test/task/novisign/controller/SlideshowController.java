@@ -4,10 +4,7 @@ import com.test.task.novisign.model.dto.SlideshowDto;
 import com.test.task.novisign.service.SlideshowService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -20,5 +17,10 @@ public class SlideshowController {
     @PostMapping("/addSlideshow")
     public Mono<SlideshowDto> addSlideshow(@Valid @RequestBody SlideshowDto slideshowDto) {
         return slideshowService.addSlideshow(slideshowDto);
+    }
+
+    @DeleteMapping("deleteSlideshow/{id}")
+    public Mono<Void> deleteSlideshow(@PathVariable Long id) {
+        return slideshowService.deleteSlideshow(id);
     }
 }

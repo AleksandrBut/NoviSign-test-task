@@ -1,12 +1,16 @@
 package com.test.task.novisign.controller;
 
 import com.test.task.novisign.model.dto.ImageDto;
+import com.test.task.novisign.model.dto.ImageWithSlideshowsDto;
 import com.test.task.novisign.service.ImageService;
+import com.test.task.novisign.service.SlideshowImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -16,6 +20,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class ImageController {
 
     private final ImageService imageService;
+    private final SlideshowImageService slideshowImageService;
 
     @PostMapping("addImage")
     @ResponseStatus(CREATED)
@@ -24,8 +29,9 @@ public class ImageController {
     }
 
     @GetMapping("images/search")
-    public Flux<ImageDto> searchImages() {
-        return imageService.searchImages();
+    public Flux<ImageWithSlideshowsDto> searchImagesWithSlideshows(@RequestParam(required = false) String urlKeyword,
+                                                                   @RequestParam(required = false) Duration playDuration) {
+        return slideshowImageService.searchImagesWithSlideshows(urlKeyword, playDuration);
     }
 
     @DeleteMapping("deleteImage/{id}")
