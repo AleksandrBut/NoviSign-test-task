@@ -18,6 +18,9 @@ import java.util.List;
 @Service
 public class ImageServiceImpl implements ImageService {
 
+    private static final String IMAGE_NOT_FOUND_MESSAGE = "Image with id %s is not found";
+    private static final String IMAGES_DO_NOT_EXIST_MESSAGE = "One or many specified images don't exist";
+
     private final ImageRepository imageRepository;
     private final SlideshowImageRepository slideshowImageRepository;
     private final ImageMapper imageMapper;
@@ -32,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
     public Mono<Void> deleteImageById(Long id) {
         return imageRepository.existsById(id)
                 .filter(exists -> exists)
-                .switchIfEmpty(Mono.error(new NotFoundException("Image with id " + id + " is not found")))
+                .switchIfEmpty(Mono.error(new NotFoundException(String.format(IMAGE_NOT_FOUND_MESSAGE, id))))
                 .then(imageRepository.deleteById(id));
     }
 
@@ -44,7 +47,7 @@ public class ImageServiceImpl implements ImageService {
 
         return slideshowImageRepository.saveAll(imageMapper.toSlideshowImages(imageIds, slideshowId))
                 .onErrorResume(DataIntegrityViolationException.class,
-                        e -> Mono.error(new DataIntegrityViolationException("One or many specified images don't exist")))
+                        e -> Mono.error(new DataIntegrityViolationException(IMAGES_DO_NOT_EXIST_MESSAGE)))
                 .thenMany(updatePlayDurationIfSpecified(imageDtoList))
                 .thenMany(imageRepository.findAllById(imageIds)
                         .map(imageMapper::toDto));

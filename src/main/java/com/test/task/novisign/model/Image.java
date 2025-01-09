@@ -13,6 +13,5 @@ public record Image(
         String name,
         String url,
         Duration playDuration,
-        LocalDateTime additionDateTime
-) {
+        LocalDateTime additionDateTime) {
 }

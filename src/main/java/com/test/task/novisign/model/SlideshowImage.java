@@ -8,6 +8,5 @@ public record SlideshowImage(
         @Id
         Long id,
         Long imageId,
-        Long slideshowId
-) {
+        Long slideshowId) {
 }
