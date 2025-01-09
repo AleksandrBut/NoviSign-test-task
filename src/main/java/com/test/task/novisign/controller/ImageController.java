@@ -16,25 +16,25 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api")
 public class ImageController {
 
     private final ImageService imageService;
     private final SlideshowImageService slideshowImageService;
 
-    @PostMapping("addImage")
+    @PostMapping("/addImage")
     @ResponseStatus(CREATED)
     public Mono<ImageDto> addImage(@Valid @RequestBody ImageDto imageDto) {
         return imageService.addImage(imageDto);
     }
 
-    @GetMapping("images/search")
+    @GetMapping("/images/search")
     public Flux<ImageWithSlideshowsDto> searchImagesWithSlideshows(@RequestParam(required = false) String urlKeyword,
                                                                    @RequestParam(required = false) Duration playDuration) {
         return slideshowImageService.searchImagesWithSlideshows(urlKeyword, playDuration);
     }
 
-    @DeleteMapping("deleteImage/{id}")
+    @DeleteMapping("/deleteImage/{id}")
     public Mono<Void> deleteImageById(@PathVariable Long id) {
         return imageService.deleteImageById(id);
     }

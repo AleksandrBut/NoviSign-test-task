@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api")
 public class SlideshowController {
 
     private final SlideshowService slideshowService;
@@ -19,7 +19,7 @@ public class SlideshowController {
         return slideshowService.addSlideshow(slideshowDto);
     }
 
-    @DeleteMapping("deleteSlideshow/{id}")
+    @DeleteMapping("/deleteSlideshow/{id}")
     public Mono<Void> deleteSlideshow(@PathVariable Long id) {
         return slideshowService.deleteSlideshow(id);
     }
