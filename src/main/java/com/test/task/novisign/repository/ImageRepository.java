@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 @Repository
 public interface ImageRepository extends ReactiveCrudRepository<Image, Long> {
@@ -18,4 +19,6 @@ public interface ImageRepository extends ReactiveCrudRepository<Image, Long> {
     Flux<Image> findByUrlContaining(String urlKeyword);
 
     Flux<Image> findByPlayDurationEquals(Duration playDuration);
+
+    Flux<Image> findAllByIdInOrderByAdditionDateTime(List<Long> ids);
 }

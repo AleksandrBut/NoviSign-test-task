@@ -23,4 +23,9 @@ public class SlideshowController {
     public Mono<Void> deleteSlideshow(@PathVariable Long id) {
         return slideshowService.deleteSlideshow(id);
     }
+
+    @GetMapping("/slideshow/{id}/slideshowOrder")
+    public Mono<SlideshowDto> getSlideshowWithOrderedImages(@PathVariable Long id) {
+        return slideshowService.findSlideshowWithOrderedImages(id);
+    }
 }

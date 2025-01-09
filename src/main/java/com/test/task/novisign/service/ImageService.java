@@ -13,4 +13,6 @@ public interface ImageService {
     Mono<Void> deleteImageById(Long id);
 
     Flux<ImageDto> addImagesToSlideshow(List<ImageDto> images, Long id);
+
+    Flux<ImageDto> findAllOrderByAdditionDateTime(List<Long> ids);
 }

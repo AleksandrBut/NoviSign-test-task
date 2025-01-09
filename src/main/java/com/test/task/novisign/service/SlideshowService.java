@@ -10,4 +10,6 @@ public interface SlideshowService {
     Mono<Void> deleteSlideshow(Long id);
 
     Mono<SlideshowDto> findById(Long id);
+
+    Mono<SlideshowDto> findSlideshowWithOrderedImages(Long id);
 }

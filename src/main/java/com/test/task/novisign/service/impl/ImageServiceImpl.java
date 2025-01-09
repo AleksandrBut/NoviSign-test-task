@@ -55,4 +55,10 @@ public class ImageServiceImpl implements ImageService {
                 .filter(imageDto -> imageDto.getPlayDuration() != null)
                 .flatMap(imageDto -> imageRepository.updatePlayDurationByImageId(imageDto.getId(), imageDto.getPlayDuration()));
     }
+
+    @Override
+    public Flux<ImageDto> findAllOrderByAdditionDateTime(List<Long> ids) {
+        return imageRepository.findAllByIdInOrderByAdditionDateTime(ids)
+                .map(imageMapper::toDto);
+    }
 }

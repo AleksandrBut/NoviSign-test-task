@@ -1,8 +1,10 @@
 package com.test.task.novisign.service.impl;
 
 import com.test.task.novisign.exception.NotFoundException;
+import com.test.task.novisign.model.SlideshowImage;
 import com.test.task.novisign.model.dto.SlideshowDto;
 import com.test.task.novisign.model.mapper.SlideshowMapper;
+import com.test.task.novisign.repository.SlideshowImageRepository;
 import com.test.task.novisign.repository.SlideshowRepository;
 import com.test.task.novisign.service.ImageService;
 import com.test.task.novisign.service.SlideshowService;
@@ -15,7 +17,10 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SlideshowServiceImpl implements SlideshowService {
 
+    private static final String SLIDESHOW_NOT_FOUND_MESSAGE = "Slideshow with id %s is not found";
+
     private final SlideshowRepository slideshowRepository;
+    private final SlideshowImageRepository slideshowImageRepository;
     private final SlideshowMapper slideshowMapper;
     private final ImageService imageService;
 
@@ -35,7 +40,7 @@ public class SlideshowServiceImpl implements SlideshowService {
     public Mono<Void> deleteSlideshow(Long id) {
         return slideshowRepository.existsById(id)
                 .filter(exists -> exists)
-                .switchIfEmpty(Mono.error(new NotFoundException("Slideshow with id " + id + " is not found")))
+                .switchIfEmpty(Mono.error(new NotFoundException(String.format(SLIDESHOW_NOT_FOUND_MESSAGE, id))))
                 .then(slideshowRepository.deleteById(id));
     }
 
@@ -43,5 +48,21 @@ public class SlideshowServiceImpl implements SlideshowService {
     public Mono<SlideshowDto> findById(Long id) {
         return slideshowRepository.findById(id)
                 .map(slideshowMapper::toDto);
+    }
+
+    @Override
+    public Mono<SlideshowDto> findSlideshowWithOrderedImages(Long id) {
+        return findById(id)
+                .switchIfEmpty(Mono.error(new NotFoundException(String.format(SLIDESHOW_NOT_FOUND_MESSAGE, id))))
+                .zipWhen(slideshowDto -> slideshowImageRepository.findAllBySlideshowId(id)
+                                .map(SlideshowImage::imageId)
+                                .collectList()
+                                .flatMapMany(imageService::findAllOrderByAdditionDateTime)
+                                .collectList(),
+                        (slideshowDto, imageDtoList) -> {
+                            slideshowDto.setImages(imageDtoList);
+
+                            return slideshowDto;
+                        });
     }
 }
