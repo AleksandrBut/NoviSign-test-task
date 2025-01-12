@@ -3,11 +3,14 @@ package com.test.task.novisign;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.liquibase.enabled=false",
+        "spring.main.web-application-type=reactive"
+})
 class ApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

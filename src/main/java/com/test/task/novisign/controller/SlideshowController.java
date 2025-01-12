@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api")
@@ -15,6 +17,7 @@ public class SlideshowController {
     private final SlideshowService slideshowService;
 
     @PostMapping("/addSlideshow")
+    @ResponseStatus(CREATED)
     public Mono<SlideshowDto> addSlideshow(@Valid @RequestBody SlideshowDto slideshowDto) {
         return slideshowService.addSlideshow(slideshowDto);
     }
