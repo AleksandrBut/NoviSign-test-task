@@ -9,6 +9,7 @@
 
 ### API
 1. **Add image:** POST api/images/addImage
+   
    Returns a newly created images and HTTP status 201 Created.
    
    **Validations:**
@@ -33,13 +34,14 @@
     "additionDateTime": "2025-01-12T16:46:40.815782628"
    }
    ```
-2. **Delete image by id:** DELETE api/deleteImage/{id}
+3. **Delete image by id:** DELETE api/deleteImage/{id}
+   
    Returns empty response with HTTP status 200 Ok if image was deleted.
    
    **Validations:**
    - Image with specified id **must exist**, otherwise corresponding error will be returned with HTTP status 404 Not Found
 
-3. **Add slideshow:** POST /api/addSlideshow
+5. **Add slideshow:** POST /api/addSlideshow
    
    Returns newly creaeted slideshow and HTTP status 201 Created.
    
@@ -75,14 +77,14 @@
     ]
    }
    ```
-4. **Delete slideshow by id:** DELETE /api/deleteSlideshow/{id}
+6. **Delete slideshow by id:** DELETE /api/deleteSlideshow/{id}
 
    Returns empty response with HTTP status 200 Ok if slideshow was deleted.
    
    **Validations:**
    - Slideshow with specified id **must exist**, otherwise corresponding error will be returned with HTTP status 404 Not Found
 
-5. **Search images by url keyword or duration:** GET api/images/search
+7. **Search images by url keyword or duration:** GET api/images/search
 
    Optional request params: urlKeyword=url, playDuration=PT1S
 
