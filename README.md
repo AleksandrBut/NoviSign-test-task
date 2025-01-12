@@ -139,4 +139,6 @@
 
 ### Implementation details
 
+App can be started by running ```docker-compose up -d ```. App will be exposed to port 8080, Kafka server - to port 29092 
+
 Kafka topics are created during initialization of containers and are called **image** (holds messages about actions with images) and **slideshow** (holds messages about actions with slideshows)
