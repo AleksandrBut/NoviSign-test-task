@@ -1,4 +1,14 @@
 services:
+  app:
+    build:
+      no_cache: true
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+      - kafka-init
+    ports:
+      - "8080:8080"
+
   db:
     image: postgres:17.2
     ports:
@@ -27,6 +37,7 @@ services:
 
   kafka-init:
     image: *kafka_image
+    init: true
     depends_on:
       - kafka
     command: |
@@ -38,4 +49,3 @@ services:
       kafka-topics --create --topic image --if-not-exists --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1;
       kafka-topics --create --topic slideshow --if-not-exists --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1;
       "
-#  kafka-console-consumer.sh --bootstrap-server localhost:29092 --topic my-test-topic --from-beginning
