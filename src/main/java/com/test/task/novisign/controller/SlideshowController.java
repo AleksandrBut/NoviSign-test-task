@@ -28,4 +28,10 @@ public class SlideshowController {
     public Mono<SlideshowDto> getSlideshowWithOrderedImages(@PathVariable Long id) {
         return slideshowService.findSlideshowWithOrderedImages(id);
     }
+
+    @PostMapping("/slideshow/{slideshowId}/proof-of-play/{imageId}")
+    public Mono<Void> recordEventReplacedImage(@PathVariable Long slideshowId,
+                                               @PathVariable Long imageId) {
+        return slideshowService.recordEventReplacedImage(slideshowId, imageId);
+    }
 }

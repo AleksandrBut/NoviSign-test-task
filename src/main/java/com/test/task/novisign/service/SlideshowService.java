@@ -12,4 +12,6 @@ public interface SlideshowService {
     Mono<SlideshowDto> findById(Long id);
 
     Mono<SlideshowDto> findSlideshowWithOrderedImages(Long id);
+
+    Mono<Void> recordEventReplacedImage(Long slideshowId, Long imageId);
 }

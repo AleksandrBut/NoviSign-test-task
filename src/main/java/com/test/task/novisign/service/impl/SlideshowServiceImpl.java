@@ -69,4 +69,12 @@ public class SlideshowServiceImpl implements SlideshowService {
                             return slideshowDto;
                         });
     }
+
+    @Override
+    public Mono<Void> recordEventReplacedImage(Long slideshowId, Long imageId) {
+        return Mono.create(monoSink -> {
+            slideshowProducer.sendMessage("Image with id " + imageId + " in slideshow with id " + slideshowId + " is replaced by the next one");
+            monoSink.success();
+        });
+    }
 }
