@@ -1,6 +1,7 @@
 package com.test.task.novisign.service.impl;
 
 import com.test.task.novisign.exception.NotFoundException;
+import com.test.task.novisign.kafka.producer.KafkaProducer;
 import com.test.task.novisign.model.dto.ImageDto;
 import com.test.task.novisign.model.mapper.ImageMapper;
 import com.test.task.novisign.repository.ImageRepository;
@@ -24,11 +25,13 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final SlideshowImageRepository slideshowImageRepository;
     private final ImageMapper imageMapper;
+    private final KafkaProducer imageProducer;
 
     @Override
     public Mono<ImageDto> addImage(ImageDto imageDto) {
         return imageRepository.save(imageMapper.toEntity(imageDto))
-                .map(imageMapper::toDto);
+                .map(imageMapper::toDto)
+                .doOnSuccess(image -> imageProducer.sendMessage("Image added: " + image));
     }
 
     @Override
@@ -36,7 +39,8 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.existsById(id)
                 .filter(exists -> exists)
                 .switchIfEmpty(Mono.error(new NotFoundException(String.format(IMAGE_NOT_FOUND_MESSAGE, id))))
-                .then(imageRepository.deleteById(id));
+                .then(imageRepository.deleteById(id))
+                .doOnSuccess(unused -> imageProducer.sendMessage("Image with id " + id + " deleted"));
     }
 
     @Override

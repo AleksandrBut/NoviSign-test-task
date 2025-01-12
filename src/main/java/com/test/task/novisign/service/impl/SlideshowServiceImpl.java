@@ -1,6 +1,7 @@
 package com.test.task.novisign.service.impl;
 
 import com.test.task.novisign.exception.NotFoundException;
+import com.test.task.novisign.kafka.producer.impl.SlideshowProducer;
 import com.test.task.novisign.model.SlideshowImage;
 import com.test.task.novisign.model.dto.SlideshowDto;
 import com.test.task.novisign.model.mapper.SlideshowMapper;
@@ -23,6 +24,7 @@ public class SlideshowServiceImpl implements SlideshowService {
     private final SlideshowImageRepository slideshowImageRepository;
     private final SlideshowMapper slideshowMapper;
     private final ImageService imageService;
+    private final SlideshowProducer slideshowProducer;
 
     @Override
     @Transactional
@@ -33,7 +35,8 @@ public class SlideshowServiceImpl implements SlideshowService {
                         (slideshow, images) -> {
                             slideshow.setImages(images);
                             return slideshow;
-                        });
+                        })
+                .doOnSuccess(slideshow -> slideshowProducer.sendMessage("Slideshow added: " + slideshow));
     }
 
     @Override
@@ -41,7 +44,8 @@ public class SlideshowServiceImpl implements SlideshowService {
         return slideshowRepository.existsById(id)
                 .filter(exists -> exists)
                 .switchIfEmpty(Mono.error(new NotFoundException(String.format(SLIDESHOW_NOT_FOUND_MESSAGE, id))))
-                .then(slideshowRepository.deleteById(id));
+                .then(slideshowRepository.deleteById(id))
+                .doOnSuccess(unused -> slideshowProducer.sendMessage("Slideshow with id " + id + " deleted"));
     }
 
     @Override
